@@ -1,28 +1,28 @@
 {
-    "name" : "quiqqer/authgoogle2fa",
-    "type" : "quiqqer-module",
-    "description" : "QUIQQER Authentication with Google Authenticator",
-    "version" : "dev-dev",
-    "license" : "GPL-3.0+",
-    "authors" : [
-        {
-            "name": "Patrick Müller",
-            "email": "p.mueller@pcsg.de",
-            "homepage": "http://www.pcsg.de",
-            "role": "Developer"
-        }
-    ],
-    "support" : {
-        "email": "support@pcsg.de",
-        "url": "http://www.pcsg.de"
-    },
-    "require": {
-        
+  "name": "quiqqer/authgoogle2fa",
+  "type": "quiqqer-module",
+  "description": "QUIQQER Authentication with Google Authenticator",
+  "version": "dev-dev",
+  "license": "GPL-3.0+",
+  "authors": [
+    {
+      "name": "Patrick Müller",
+      "email": "p.mueller@pcsg.de",
+      "homepage": "http://www.pcsg.de",
+      "role": "Developer"
     }
-    ,"autoload": {
-  "psr-4": {
+  ],
+  "support": {
+    "email": "support@pcsg.de",
+    "url": "http://www.pcsg.de"
+  },
+  "require": {
+    "pragmarx/google2fa": "1.*",
+    "bacon/bacon-qr-code": "~1.0"
+  },
+  "autoload": {
+    "psr-4": {
       "QUI\\Auth\\Google2Fa\\": "src/QUI/Auth/Google2Fa"
-   }
-}
-
+    }
+  }
 }
