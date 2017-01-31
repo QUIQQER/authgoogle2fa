@@ -61,12 +61,22 @@ class Auth implements AuthInterface
     /**
      * Authenticate the user
      *
-     * @param string|array|integer $authCode
+     * @param string|array|integer $authData
      *
      * @throws QUI\Auth\Google2Fa\Exception
      */
-    public function auth($authCode)
+    public function auth($authData)
     {
+        if (!is_array($authData)
+            || !isset($authData['code'])
+        ) {
+            throw new Google2FaException(array(
+                'quiqqer/authgoogle2fa',
+                'exception.auth.wrong.auth.code'
+            ));
+        }
+
+        $authCode    = $authData['code'];
         $authSecrets = json_decode($this->User->getAttribute('quiqqer.auth.google2fa.secrets'), true);
 
         // if no secret keys have been generated -> automatically authenticate the user
