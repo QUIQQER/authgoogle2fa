@@ -207,7 +207,7 @@ define('package/quiqqer/authgoogle2fa/bin/controls/Settings', [
                         resolve();
                     }, {
                         'package': 'quiqqer/authgoogle2fa',
-                        'userId' : '59687670', //this.getAttribute('User').getId()
+                        'userId' : self.getAttribute('uid'),
                         onError  : reject
                     }
                 );
@@ -283,7 +283,7 @@ define('package/quiqqer/authgoogle2fa/bin/controls/Settings', [
                             }, {
                                 'package': 'quiqqer/authgoogle2fa',
                                 title    : val,
-                                userId   : '59687670' //self.getAttribute('User').getId()
+                                userId   : self.getAttribute('uid')
                             }
                         )
                     }
@@ -371,7 +371,7 @@ define('package/quiqqer/authgoogle2fa/bin/controls/Settings', [
                 }, {
                     'package': 'quiqqer/authgoogle2fa',
                     title    : Row.title,
-                    userId   : '59687670' //self.getAttribute('User').getId()
+                    userId   : self.getAttribute('uid')
                 }
             );
         },
@@ -422,7 +422,7 @@ define('package/quiqqer/authgoogle2fa/bin/controls/Settings', [
                             }, {
                                 'package': 'quiqqer/authgoogle2fa',
                                 titles   : JSON.encode(titles),
-                                userId   : '59687670' //self.getAttribute('User').getId()
+                                userId   : self.getAttribute('uid')
                             }
                         )
                     }
