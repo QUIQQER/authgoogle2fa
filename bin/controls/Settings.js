@@ -50,6 +50,10 @@ define('package/quiqqer/authgoogle2fa/bin/controls/Settings', [
             '$deleteKeys'
         ],
 
+        options: {
+            uid: false
+        },
+
         initialize: function (options) {
             this.setAttribute('title', QUILocale.get(lg, 'passwords.panel.title'));
 
@@ -152,6 +156,10 @@ define('package/quiqqer/authgoogle2fa/bin/controls/Settings', [
          * Event: onInject
          */
         $onInject: function () {
+
+            console.log(this.getAttribute('uid'));
+            console.log(this.getElm().get('data-qui-options-uid'));
+
             this.resize();
             this.refresh();
         },

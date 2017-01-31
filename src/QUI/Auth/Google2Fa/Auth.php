@@ -85,7 +85,9 @@ class Auth implements AuthInterface
         }
 
         foreach ($authSecrets as $k => $secretData) {
-            if ($this->Google2FA->verifyKey(trim($secretData['key']), $authCode)) {
+            $key = trim(Security::decrypt($secretData['key']));
+
+            if ($this->Google2FA->verifyKey($key, $authCode)) {
                 return;
             }
 
