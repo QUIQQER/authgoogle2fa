@@ -1,0 +1,30 @@
+.quiqqer-auth-google2fa-register-grid-container {
+    float: left;
+    height: 100%;
+    width: 100%;
+}
+
+.quiqqer-auth-google2fa-register-showkey-key {
+    font-family: monospace;
+    font-size: 16px;
+    letter-spacing: 2px;
+}
+
+.quiqqer-auth-google2fa-register-showkey-recoverykeys {
+    font-family: monospace;
+}
+
+.quiqqer-auth-google2fa-register-generatekey {
+    float: left;
+    width: 100%;
+}
+
+.quiqqer-auth-google2fa-register-generatekey span {
+    display: inline-block;
+    margin-bottom: 5px;
+    width: 100%;
+}
+
+.quiqqer-auth-google2fa-register-generatekey input {
+    width: 100%;
+}

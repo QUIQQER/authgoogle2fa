@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menu>
+    <item parent="/apps/"
+          name="locationcategories"
+          require="package/quiqqer/authgoogle2fa/bin/Panel"
+          icon="fa fa-map-o"
+    >
+        GA Test
+    </item>
+</menu>

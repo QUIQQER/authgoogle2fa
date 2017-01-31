@@ -1,6 +1,13 @@
 <?php
 
-namespace QUI\Authe\Google2Fa;
+namespace QUI\Auth\Google2Fa;
+
+use QUI;
+use PragmaRX\Google2FA\Google2FA;
+use QUI\Users\AuthInterface;
+use QUI\Users\User;
+use QUI\Auth\Google2Fa\Exception as Google2FaException;
+use QUI\Security;
 
 /**
  * Class Auth
@@ -9,10 +16,161 @@ namespace QUI\Authe\Google2Fa;
  *
  * @package QUI\Authe\Google2Fa
  */
-class Auth
+class Auth implements AuthInterface
 {
-    public static function auth($authData)
-    {
+    /**
+     * Google2FA class
+     *
+     * @var Google2FA
+     */
+    protected $Google2FA = null;
 
+    /**
+     * User that is to be authenticated
+     *
+     * @var User
+     */
+    protected $User = null;
+
+    /**
+     * Auth Constructor.
+     *
+     * @param string|array|integer $user - name of the user, or user id
+     *
+     * @throws QUI\Auth\Google2Fa\Exception
+     */
+    public function __construct($user = '')
+    {
+        $this->User      = QUI::getUsers()->getUserByName($user);
+        $this->Google2FA = new Google2FA();
+    }
+
+    /**
+     * @param null|\QUI\Locale $Locale
+     * @return string
+     */
+    public function getTitle($Locale = null)
+    {
+        if (is_null($Locale)) {
+            $Locale = QUI::getLocale();
+        }
+
+        return $Locale->get('quiqqer/authgoogle2fa', 'google2fa.title');
+    }
+
+    /**
+     * Authenticate the user
+     *
+     * @param string|array|integer $authCode
+     *
+     * @throws QUI\Auth\Google2Fa\Exception
+     */
+    public function auth($authCode)
+    {
+        $authSecrets = json_decode($this->User->getAttribute('quiqqer.auth.google2fa.secrets'), true);
+
+        // if no secret keys have been generated -> automatically authenticate the user
+        if (empty($authSecrets)) {
+            return;
+        }
+
+        foreach ($authSecrets as $k => $secretData) {
+            if ($this->Google2FA->verifyKey($secretData['key'], $authCode)) {
+                return;
+            }
+
+            // if key did not work check for recovery keys
+            foreach ($secretData['recoveryKeys'] as $k2 => $recoveryKey) {
+                $recoveryKey = trim(Security::decrypt($recoveryKey));
+
+                if (!$this->Google2FA->verifyKey($recoveryKey, $authCode)) {
+                    continue;
+                }
+
+                // remove recovery key from list indefinitely
+                unset($secretData['recoveryKeys'][$k2]);
+                $authSecrets[$k] = $secretData;
+
+                $this->User->setAttribute('quiqqer.auth.google2fa.secrets', json_encode($authSecrets));
+                $this->User->save();
+
+                return;
+            }
+        }
+
+        throw new Google2FaException(array(
+            'quiqqer/authgoogle2fa',
+            'exception.auth.wrong.auth.code'
+        ));
+    }
+
+    /**
+     * Return the user object
+     *
+     * @return \QUI\Interfaces\Users\User
+     */
+    public function getUser()
+    {
+        return $this->User;
+    }
+
+    /**
+     * Return the quiqqer user id
+     *
+     * @return integer|boolean
+     */
+    public function getUserId()
+    {
+        return $this->User->getId();
+    }
+
+    /**
+     * Generate 16-bit (encrypted) recovery keys as alternative logins
+     *
+     * @param int $count (optional) - number of key [default: 10]
+     * @return array
+     */
+    public static function generateRecoveryKeys($count = 10)
+    {
+        $recoveryKeys = array();
+        $Google2FA    = new Google2FA();
+
+        for ($i = 0; $i < $count; $i++) {
+            $recoveryKeys[] = Security::encrypt(mb_substr(md5($Google2FA->generateSecretKey(16)), 0, 10));
+        }
+
+        return $recoveryKeys;
+    }
+
+    /**
+     * @return \QUI\Control
+     */
+    public static function getLoginControl()
+    {
+        return new QUI\Auth\Google2Fa\Controls\Login();
+    }
+
+    /**
+     * @return \QUI\Control
+     */
+    public static function getRegisterControl()
+    {
+        return null;
+    }
+
+    /**
+     * @return \QUI\Control
+     */
+    public static function getSettingsControl()
+    {
+        return new QUI\Auth\Google2Fa\Controls\Settings();
+    }
+
+    /**
+     * @return \QUI\Control
+     */
+    public static function getPasswordResetControl()
+    {
+        return null;
     }
 }
