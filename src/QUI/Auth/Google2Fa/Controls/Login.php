@@ -32,8 +32,6 @@ class Login extends Control
      */
     public function getBody()
     {
-        $this->addCSSFile(dirname(__FILE__) . '/Login.css');
-
         $Engine = QUI::getTemplateManager()->getEngine();
         return $Engine->fetch(dirname(__FILE__) . '/Login.html');
     }
