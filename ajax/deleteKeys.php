@@ -11,10 +11,22 @@ use QUI\Utils\Security\Orthos;
 QUI::$Ajax->registerFunction(
     'package_quiqqer_authgoogle2fa_ajax_deleteKeys',
     function ($userId, $titles) {
-        $AuthUser = QUI::getUsers()->get((int)$userId);
-        $titles   = Orthos::clearArray(json_decode($titles, true));
+        $Users       = QUI::getUsers();
+        $AuthUser    = $Users->get((int)$userId);
+        $titles      = Orthos::clearArray(json_decode($titles, true));
+        $SessionUser = QUI::getUserBySession();
 
         // @todo Check user edit permission of session user
+        if ($Users->isNobodyUser($SessionUser)) {
+            throw new QUI\Permissions\Exception(
+                QUI::getLocale()->get(
+                    'quiqqer/system',
+                    'exception.lib.user.no.edit.rights'
+                )
+            );
+        }
+
+        $SessionUser->checkEditPermission();
 
         try {
             $secrets = json_decode($AuthUser->getAttribute('quiqqer.auth.google2fa.secrets'), true);

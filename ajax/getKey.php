@@ -15,11 +15,21 @@ use QUI\Auth\Google2Fa\Auth;
 QUI::$Ajax->registerFunction(
     'package_quiqqer_authgoogle2fa_ajax_getKey',
     function ($userId, $title) {
-        $AuthUser = QUI::getUsers()->get((int)$userId);
-        $title    = Orthos::clear($title);
-        $keyData  = array();
+        $Users       = QUI::getUsers();
+        $SessionUser = QUI::getUserBySession();
+        $AuthUser    = $Users->get((int)$userId);
+        $title       = Orthos::clear($title);
 
-        // @todo Check user edit permission of session user
+        if ($Users->isNobodyUser($SessionUser)) {
+            throw new QUI\Permissions\Exception(
+                QUI::getLocale()->get(
+                    'quiqqer/system',
+                    'exception.lib.user.no.edit.rights'
+                )
+            );
+        }
+
+        $SessionUser->checkEditPermission();
 
         try {
             $Google2FA = new Google2FA();

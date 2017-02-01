@@ -9,10 +9,22 @@
 QUI::$Ajax->registerFunction(
     'package_quiqqer_authgoogle2fa_ajax_getKeys',
     function ($userId) {
-        $AuthUser = QUI::getUsers()->get((int)$userId);
-        $keys     = array();
+        $Users       = QUI::getUsers();
+        $SessionUser = QUI::getUserBySession();
+        $AuthUser    = $Users->get((int)$userId);
 
-        // @todo Check user edit permission of session user
+        if ($Users->isNobodyUser($SessionUser)) {
+            throw new QUI\Permissions\Exception(
+                QUI::getLocale()->get(
+                    'quiqqer/system',
+                    'exception.lib.user.no.edit.rights'
+                )
+            );
+        }
+
+        $SessionUser->checkEditPermission();
+
+        $keys = array();
 
         try {
             $secrets = json_decode($AuthUser->getAttribute('quiqqer.auth.google2fa.secrets'), true);

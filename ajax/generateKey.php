@@ -15,16 +15,25 @@ use QUI\Auth\Google2Fa\Auth;
 QUI::$Ajax->registerFunction(
     'package_quiqqer_authgoogle2fa_ajax_generateKey',
     function ($userId, $title) {
-        $AuthUser   = QUI::getUsers()->get((int)$userId);
-        $title      = Orthos::clear($title);
-        $CreateUser = QUI::getUserBySession();
+        $Users       = QUI::getUsers();
+        $SessionUser = QUI::getUserBySession();
+        $AuthUser    = $Users->get((int)$userId);
+        $title       = Orthos::clear($title);
 
-        // @todo Check user edit permission of session user
+        if ($Users->isNobodyUser($SessionUser)) {
+            throw new QUI\Permissions\Exception(
+                QUI::getLocale()->get(
+                    'quiqqer/system',
+                    'exception.lib.user.no.edit.rights'
+                )
+            );
+        }
+
+        $SessionUser->checkEditPermission();
 
         try {
             $Google2FA = new Google2FA();
-
-            $secrets = json_decode($AuthUser->getAttribute('quiqqer.auth.google2fa.secrets'), true);
+            $secrets   = json_decode($AuthUser->getAttribute('quiqqer.auth.google2fa.secrets'), true);
 
             if (empty($secrets)) {
                 $secrets = array();
@@ -43,7 +52,7 @@ QUI::$Ajax->registerFunction(
             $secrets[$title] = array(
                 'key'          => Security::encrypt($Google2FA->generateSecretKey(32)),
                 'recoveryKeys' => Auth::generateRecoveryKeys(),
-                'createUserId' => $CreateUser->getId(),
+                'createUserId' => $SessionUser->getId(),
                 'createDate'   => date('Y-m-d H:i:s')
             );
 
