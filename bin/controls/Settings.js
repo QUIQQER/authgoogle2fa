@@ -178,7 +178,7 @@ define('package/quiqqer/authgoogle2fa/bin/controls/Settings', [
             var size = this.$GridContainer.getSize();
 
             //this.$Grid.setHeight(size.y);
-            this.$Grid.setHeight(400);
+            this.$Grid.setHeight(200);  // @todo variable height
             this.$Grid.resize();
         },
 
