@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file contains
+ * This file contains QUI\Auth\Google2Fa\Controls\Login
  */
 namespace QUI\Auth\Google2Fa\Controls;
 
@@ -15,6 +15,18 @@ use QUI\Control;
  */
 class Login extends Control
 {
+    /**
+     * Login constructor.
+     *
+     * @param array $attributes
+     */
+    public function __construct(array $attributes = array())
+    {
+        parent::__construct($attributes);
+
+        $this->addCSSFile(dirname(__FILE__) . '/Login.css');
+    }
+
     /**
      * @return string
      */
