@@ -24,10 +24,10 @@
             <de><![CDATA[Beim Verarbeiten der Anfrage ist ein unerwarteter Fehler aufgetreten. Bitte wenden Sie sich an einen Administrator.]]></de>
         </locale>
         <locale name="message.ajax.generateKey.error" html="true">
-            <de><![CDATA[Beim Erstellen des Authentifizierungsschlüssels ist ein Fehler aufgetreten:<br/><br/>[error]]]></de>
+            <de><![CDATA[Beim Erstellen des Authentifizierungs-Schlüssels ist ein Fehler aufgetreten:<br/><br/>[error]]]></de>
         </locale>
         <locale name="message.ajax.generateKey.success">
-            <de><![CDATA[Der Authentifizierungsschlüssel "[title]" wurde erfolgreich erstellt.]]></de>
+            <de><![CDATA[Der Authentifizierungs-Schlüssel "[title]" wurde erfolgreich erstellt.]]></de>
         </locale>
         <locale name="message.ajax.getKey.error" html="true">
             <de><![CDATA[Beim Abruf des Authentifizierungs-Schlüssels ist ein Fehler aufgetreten:<br/><br/>[error]]]></de>
@@ -39,10 +39,16 @@
             <de><![CDATA[Beim Abruf der Authentifizierungs-Schlüssels ist ein Fehler aufgetreten:<br/><br/>[error]]]></de>
         </locale>
         <locale name="message.ajax.deleteKeys.error" html="true">
-            <de><![CDATA[Beim Löschen der Authentifizierungsschlüssels ist ein Fehler aufgetreten:<br/><br/>[error]]]></de>
+            <de><![CDATA[Beim Löschen der Authentifizierungs-Schlüssel ist ein Fehler aufgetreten:<br/><br/>[error]]]></de>
         </locale>
         <locale name="message.ajax.deleteKeys.success">
-            <de><![CDATA[Die gewählten Authentifizierungsschlüssel wurden erfolgreich gelöscht.]]></de>
+            <de><![CDATA[Die gewählten Authentifizierungs-Schlüssel wurden erfolgreich gelöscht.]]></de>
+        </locale>
+        <locale name="message.ajax.regenerateRecoveryKeys.error" html="true">
+            <de><![CDATA[Beim Neu-Generieren der Einmal-Login-Codes ist ein Fehler aufgetreten:<br/><br/>[error]]]></de>
+        </locale>
+        <locale name="message.ajax.regenerateRecoveryKeys.success">
+            <de><![CDATA[Die Einmal-Login-Codes wurden neu generiert. Die bisherigen Codes sind ab jetzt nicht mehr gültig.]]></de>
         </locale>
 
         <!-- Class: Auth -->
@@ -58,7 +64,7 @@
 
         <!-- Login -->
         <locale name="login.code">
-            <de><![CDATA[Authentifizierungs-Code]]></de>
+            <de><![CDATA[Google Authenticator Code]]></de>
         </locale>
         <locale name="login.btn.auth">
             <de><![CDATA[Authentifizieren]]></de>
@@ -70,7 +76,7 @@
 
         <!-- Control: Settings -->
         <locale name="controls.settings.generatekey.title">
-            <de><![CDATA[Neuer Authentifizierungsschlüssel]]></de>
+            <de><![CDATA[Neuer Authentifizierungs-Schlüssel]]></de>
         </locale>
         <locale name="controls.settings.generatekey.title.label">
             <de><![CDATA[Bezeichnung]]></de>
@@ -103,7 +109,7 @@
             <de><![CDATA[Erstellungsdatum]]></de>
         </locale>
         <locale name="controls.settings.showkey.template.labelRecoveryKeys">
-            <de><![CDATA[Einmal-Login-Schlüssel]]></de>
+            <de><![CDATA[Einmal-Login-Codes]]></de>
         </locale>
         <locale name="controls.settings.deleteKeys.title">
             <de><![CDATA[Authentifizierungs-Schlüssel löschen]]></de>
@@ -111,5 +117,15 @@
         <locale name="controls.settings.deleteKeys.info" html="true">
             <de><![CDATA[Sind Sie sicher, dass Sie die folgenden Authentifizierungs-Schlüssel unwiderruflich löschen wollen? Alle mit diesen Schlüsseln verknüpften Geräte können sich danach nicht mehr mit generierten Codes zu diesen Schlüsseln authentifizieren.<br/><br/>[titles]]]></de>
         </locale>
+        <locale name="controls.settings.showkey.regenerate.recoverykeys.btn">
+            <de><![CDATA[Neu generieren]]></de>
+        </locale>
+        <locale name="controls.settings.showkey.regenerate.warning.title">
+            <de><![CDATA[Einmal-Login-Codes neu generieren]]></de>
+        </locale>
+        <locale name="controls.settings.showkey.regenerate.warning">
+            <de><![CDATA[Sind Sie sicher, dass Sie die Einmal-Login-Codes neu generieren wollen? Alle alten Codes sind danach nicht mehr gültig und es können nur die neuen Codes verwendet werden.]]></de>
+        </locale>
+
     </groups>
 </locales>

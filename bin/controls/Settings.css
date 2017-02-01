@@ -28,3 +28,11 @@
 .quiqqer-auth-google2fa-register-generatekey input {
     width: 100%;
 }
+
+.quiqqer-auth-google2fa-register-showkey-data .field-container-item {
+    width: 150px;
+}
+
+.quiqqer-auth-google2fa-register-showkey-recoverykeys ul {
+    padding-left: 20px;
+}

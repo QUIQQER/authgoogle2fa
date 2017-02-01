@@ -92,19 +92,26 @@ class Auth implements AuthInterface
             }
 
             // if key did not work check for recovery keys
-            foreach ($secretData['recoveryKeys'] as $k2 => $recoveryKey) {
-                $recoveryKey = trim(Security::decrypt($recoveryKey));
+            foreach ($secretData['recoveryKeys'] as $k2 => $recoveryKeyData) {
+                if ($recoveryKeyData['used']) {
+                    continue;
+                }
+
+                $recoveryKey = trim(Security::decrypt($recoveryKeyData['key']));
 
                 if ($recoveryKey != $authCode) {
                     continue;
                 }
 
-                // remove recovery key from list indefinitely
-                unset($secretData['recoveryKeys'][$k2]);
-                $authSecrets[$k] = $secretData;
+                // set used status of recovery key to true
+                $recoveryKeyData['used']     = true;
+                $recoveryKeyData['usedDate'] = date('Y-m-d H:i:s');
+
+                $secretData['recoveryKeys'][$k2] = $recoveryKeyData;
+                $authSecrets[$k]                 = $secretData;
 
                 $this->User->setAttribute('quiqqer.auth.google2fa.secrets', json_encode($authSecrets));
-                $this->User->save();
+                $this->User->save(QUI::getUsers()->getSystemUser());
 
                 return;
             }
@@ -148,7 +155,11 @@ class Auth implements AuthInterface
         $Google2FA    = new Google2FA();
 
         for ($i = 0; $i < $count; $i++) {
-            $recoveryKeys[] = Security::encrypt(mb_substr(md5($Google2FA->generateSecretKey(16)), 0, 10));
+            $recoveryKeys[] = array(
+                'key'      => Security::encrypt(md5($Google2FA->generateSecretKey(16))),
+                'used'     => false,
+                'usedDate' => false
+            );
         }
 
         return $recoveryKeys;

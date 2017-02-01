@@ -2,7 +2,7 @@
 
 namespace QUI\Auth\Google2Fa;
 
-use QUI\Exception as QUIExcpetion;
+use QUI\Users\Exception as QUIExcpetion;
 
 class Exception extends QUIExcpetion
 {

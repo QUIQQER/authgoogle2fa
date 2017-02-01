@@ -16,6 +16,11 @@
     width: 100%;
 }
 
+.quiqqer-auth-google2fa-login input {
+    display: block;
+    width: 100%;
+}
+
 .quiqqer-auth-google2fa-login [type="submit"] {
     cursor: pointer;
 }

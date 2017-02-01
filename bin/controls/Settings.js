@@ -156,10 +156,6 @@ define('package/quiqqer/authgoogle2fa/bin/controls/Settings', [
          * Event: onInject
          */
         $onInject: function () {
-
-            console.log(this.getAttribute('uid'));
-            console.log(this.getElm().get('data-qui-options-uid'));
-
             this.resize();
             this.refresh();
         },
@@ -309,12 +305,65 @@ define('package/quiqqer/authgoogle2fa/bin/controls/Settings', [
             var KeyData;
             var Row  = this.$Grid.getDataByRow(row);
 
+            var FuncShowRegenerateWarning = function () {
+                var WarnPopup = new QUIConfirm({
+                    title             : QUILocale.get(lg, 'controls.settings.showkey.regenerate.warning.title'),
+                    maxHeight         : 200,
+                    maxWidth          : 500,
+                    icon              : 'fa fa-repeat',
+                    backgroundClosable: false,
+
+                    // buttons
+                    buttons         : true, // {bool} [optional] show the bottom button line
+                    //closeButtonText : Locale.get('qui/controls/windows/Popup', 'btn.close'),
+                    titleCloseButton: false,  // {bool} show the title close button
+                    content         : false,
+                    events          : {
+                        onOpen  : function () {
+                            Popup.Loader.show();
+
+                            var Content = WarnPopup.getContent();
+
+                            Content.set(
+                                'html',
+                                QUILocale.get(lg, 'controls.settings.showkey.regenerate.warning')
+                            );
+                        },
+                        onSubmit: function () {
+                            QUIAjax.post(
+                                'package_quiqqer_authgoogle2fa_ajax_regenerateRecoveryKeys',
+                                function (success) {
+                                    Popup.Loader.hide();
+                                    WarnPopup.close();
+
+                                    if (!success) {
+                                        return;
+                                    }
+
+                                    Popup.close();
+                                    self.$showKey(row);
+                                }, {
+                                    'package': 'quiqqer/authgoogle2fa',
+                                    title    : Row.title,
+                                    userId   : self.getAttribute('uid')
+                                }
+                            );
+                        },
+                        onClose : function () {
+                            Popup.Loader.hide();
+                        }
+                    }
+                });
+
+                WarnPopup.open();
+            };
+
             var Popup = new QUIConfirm({
-                title             : QUILocale.get(
-                    lg, 'controls.settings.showkey.title'
-                ),
-                maxHeight         : 720,
-                maxWidth          : 650,
+                title             : QUILocale.get(lg, 'controls.settings.showkey.template.tableHeader', {
+                    title: Row.title
+                }),
+                maxHeight         : 710,
+                maxWidth          : 665,
                 icon              : 'fa fa-key',	// {false|string} [optional] icon of the window
                 backgroundClosable: true, // {bool} [optional] closes the window on click? standard = true
 
@@ -334,9 +383,6 @@ define('package/quiqqer/authgoogle2fa/bin/controls/Settings', [
                                 key              : KeyData.key,
                                 createUser       : KeyData.createUser,
                                 createDate       : KeyData.createDate,
-                                tableHeader      : QUILocale.get(lg, lgPrefix + 'tableHeader', {
-                                    title: Row.title
-                                }),
                                 labelQrCode      : QUILocale.get(lg, lgPrefix + 'labelQrCode'),
                                 labelKey         : QUILocale.get(lg, lgPrefix + 'labelKey'),
                                 labelCreateUser  : QUILocale.get(lg, lgPrefix + 'labelCreateUser'),
@@ -360,10 +406,35 @@ define('package/quiqqer/authgoogle2fa/bin/controls/Settings', [
                         );
 
                         for (var i = 0, len = KeyData.recoveryKeys.length; i < len; i++) {
-                            new Element('li', {
-                                html: KeyData.recoveryKeys[i]
-                            }).inject(RecoveryListElm);
+                            var RecoveryKeyData = KeyData.recoveryKeys[i];
+
+                            var LiElm = new Element('li').inject(RecoveryListElm);
+
+                            var KeyTextElm = new Element('span', {
+                                html: RecoveryKeyData.key
+                            }).inject(LiElm);
+
+                            if (RecoveryKeyData.used) {
+                                KeyTextElm.setStyle('text-decoration', 'line-through');
+
+                                new Element('span', {
+                                    html: ' (' + RecoveryKeyData.usedDate + ')'
+                                }).inject(LiElm);
+                            }
                         }
+
+                        // Re-generate recovery keys btn
+                        new QUIButton({
+                            textimage: 'fa fa-repeat',
+                            text     : QUILocale.get(lg, 'controls.settings.showkey.regenerate.recoverykeys.btn'),
+                            events   : {
+                                onClick: FuncShowRegenerateWarning
+                            }
+                        }).inject(
+                            Content.getElement(
+                                '.quiqqer-auth-google2fa-register-showkey-recoverykeys-regenerate-btn'
+                            )
+                        )
                     }
                 }
             });

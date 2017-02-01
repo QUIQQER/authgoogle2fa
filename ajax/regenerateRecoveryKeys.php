@@ -7,23 +7,26 @@ use QUI\Security;
 use QUI\Auth\Google2Fa\Auth;
 
 /**
- * Create new google authenticator key for a user
+ * Re-generate a set of recovery keys for a user authentication key
  *
  * @param string $title - key title
- * @return array - key data
+ * @return bool - success
  */
 QUI::$Ajax->registerFunction(
-    'package_quiqqer_authgoogle2fa_ajax_getKey',
+    'package_quiqqer_authgoogle2fa_ajax_regenerateRecoveryKeys',
     function ($userId, $title) {
         $AuthUser = QUI::getUsers()->get((int)$userId);
         $title    = Orthos::clear($title);
-        $keyData  = array();
+        $EditUser = QUI::getUserBySession();
 
         // @todo Check user edit permission of session user
 
         try {
-            $Google2FA = new Google2FA();
-            $secrets   = json_decode($AuthUser->getAttribute('quiqqer.auth.google2fa.secrets'), true);
+            $secrets = json_decode($AuthUser->getAttribute('quiqqer.auth.google2fa.secrets'), true);
+
+            if (empty($secrets)) {
+                $secrets = array();
+            }
 
             if (!isset($secrets[$title])) {
                 throw new QUI\Auth\Google2Fa\Exception(array(
@@ -37,28 +40,19 @@ QUI::$Ajax->registerFunction(
                 ));
             }
 
-            $keyData['key']    = Security::decrypt($secrets[$title]['key']);
-            $keyData['qrCode'] = $Google2FA->getQRCodeInline(
-                $_SERVER['SERVER_NAME'],
-                $AuthUser->getUsername(),
-                $keyData['key']
+            $secrets[$title]['recoveryKeys'] = Auth::generateRecoveryKeys();
+
+            $AuthUser->setAttribute(
+                'quiqqer.auth.google2fa.secrets',
+                json_encode($secrets)
             );
 
-            $CreateUser            = QUI::getUsers()->get($secrets[$title]['createUserId']);
-            $keyData['createUser'] = $CreateUser->getUsername() . ' (' . $CreateUser->getId() . ')';
-            $keyData['createDate'] = $secrets[$title]['createDate'];
-
-            $keyData['recoveryKeys'] = array();
-
-            foreach ($secrets[$title]['recoveryKeys'] as $k => $recoveryKeyData) {
-                $recoveryKeyData['key']    = trim(Security::decrypt($recoveryKeyData['key']));
-                $keyData['recoveryKeys'][] = $recoveryKeyData;
-            }
+            $AuthUser->save();
         } catch (QUI\Auth\Google2Fa\Exception $Exception) {
             QUI::getMessagesHandler()->addError(
                 QUI::getLocale()->get(
                     'quiqqer/authgoogle2fa',
-                    'message.ajax.getKey.error',
+                    'message.ajax.regenerateRecoveryKeys.error',
                     array(
                         'error' => $Exception->getMessage()
                     )
@@ -67,10 +61,6 @@ QUI::$Ajax->registerFunction(
 
             return false;
         } catch (\Exception $Exception) {
-            QUI\System\Log::addError(
-                'AJAX :: package_quiqqer_authgoogle2fa_ajax_getKey -> ' . $Exception->getMessage()
-            );
-
             QUI::getMessagesHandler()->addError(
                 QUI::getLocale()->get(
                     'quiqqer/authgoogle2fa',
@@ -81,7 +71,17 @@ QUI::$Ajax->registerFunction(
             return false;
         }
 
-        return $keyData;
+        QUI::getMessagesHandler()->addSuccess(
+            QUI::getLocale()->get(
+                'quiqqer/authgoogle2fa',
+                'message.ajax.regenerateRecoveryKeys.success',
+                array(
+                    'title' => $title
+                )
+            )
+        );
+
+        return true;
     },
     array('userId', 'title'),
     'Permission::checkAdminUser'
