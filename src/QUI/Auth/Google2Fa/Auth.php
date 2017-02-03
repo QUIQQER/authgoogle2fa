@@ -59,6 +59,19 @@ class Auth implements AuthInterface
     }
 
     /**
+     * @param null|\QUI\Locale $Locale
+     * @return string
+     */
+    public function getDescription($Locale = null)
+    {
+        if (is_null($Locale)) {
+            $Locale = QUI::getLocale();
+        }
+
+        return $Locale->get('quiqqer/authgoogle2fa', 'google2fa.title');
+    }
+
+    /**
      * Authenticate the user
      *
      * @param string|array|integer $authData

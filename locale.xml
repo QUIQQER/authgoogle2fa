@@ -66,6 +66,9 @@
         <locale name="login.code">
             <de><![CDATA[Google Authenticator Code]]></de>
         </locale>
+        <locale name="login.username">
+            <de><![CDATA[Benutzername]]></de>
+        </locale>
         <locale name="login.btn.auth">
             <de><![CDATA[Authentifizieren]]></de>
         </locale>

@@ -32,7 +32,13 @@ class Login extends Control
      */
     public function getBody()
     {
-        $Engine = QUI::getTemplateManager()->getEngine();
+        $username = QUI::getSession()->get('username');
+        $Engine   = QUI::getTemplateManager()->getEngine();
+
+        $Engine->assign(array(
+            'username' => $username
+        ));
+
         return $Engine->fetch(dirname(__FILE__) . '/Login.html');
     }
 }
