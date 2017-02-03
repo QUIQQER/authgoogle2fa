@@ -2,7 +2,7 @@
   "name": "quiqqer/authgoogle2fa",
   "type": "quiqqer-module",
   "description": "QUIQQER Authentication with Google Authenticator",
-  "version": "dev-dev",
+  "version": "dev-master",
   "license": "GPL-3.0+",
   "authors": [
     {
