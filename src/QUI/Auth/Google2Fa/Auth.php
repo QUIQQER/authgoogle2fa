@@ -209,4 +209,36 @@ class Auth extends AbstractAuthenticator
     {
         return null;
     }
+
+    /**
+     * @return bool
+     */
+    public static function isCLICompatible()
+    {
+        return true;
+    }
+
+    /**
+     * @param QUI\System\Console $Console
+     */
+    public function cliAuthentication(QUI\System\Console $Console)
+    {
+        $Console->clearMsg();
+
+        $Console->writeLn();
+        $Console->writeLn(
+            QUI::getLocale()->get('quiqqer/authgoogle2fa', 'message.insert.code')
+        );
+
+        $Console->writeLn(
+            QUI::getLocale()->get('quiqqer/authgoogle2fa', 'message.insert.code.title'),
+            'green'
+        );
+
+        $code = $Console->readInput();
+
+        $this->auth(array(
+            'code' => $code
+        ));
+    }
 }

@@ -21,25 +21,31 @@
             <de><![CDATA[Es existiert bereits ein Authentifizierungs-Schlüssel mit dem Titel "[title]".]]></de>
         </locale>
         <locale name="message.ajax.general.error">
-            <de><![CDATA[Beim Verarbeiten der Anfrage ist ein unerwarteter Fehler aufgetreten. Bitte wenden Sie sich an einen Administrator.]]></de>
+            <de>
+                <![CDATA[Beim Verarbeiten der Anfrage ist ein unerwarteter Fehler aufgetreten. Bitte wenden Sie sich an einen Administrator.]]></de>
         </locale>
         <locale name="message.ajax.generateKey.error" html="true">
-            <de><![CDATA[Beim Erstellen des Authentifizierungs-Schlüssels ist ein Fehler aufgetreten:<br/><br/>[error]]]></de>
+            <de>
+                <![CDATA[Beim Erstellen des Authentifizierungs-Schlüssels ist ein Fehler aufgetreten:<br/><br/>[error]]]></de>
         </locale>
         <locale name="message.ajax.generateKey.success">
             <de><![CDATA[Der Authentifizierungs-Schlüssel "[title]" wurde erfolgreich erstellt.]]></de>
         </locale>
         <locale name="message.ajax.getKey.error" html="true">
-            <de><![CDATA[Beim Abruf des Authentifizierungs-Schlüssels ist ein Fehler aufgetreten:<br/><br/>[error]]]></de>
+            <de>
+                <![CDATA[Beim Abruf des Authentifizierungs-Schlüssels ist ein Fehler aufgetreten:<br/><br/>[error]]]></de>
         </locale>
         <locale name="exception.ajax.getKey.title.not.found">
-            <de><![CDATA[Der Authentifizierungs-Schlüssel "[title]" wurde für den Benutzer "[user]" (#[userId]) nicht gefunden.]]></de>
+            <de>
+                <![CDATA[Der Authentifizierungs-Schlüssel "[title]" wurde für den Benutzer "[user]" (#[userId]) nicht gefunden.]]></de>
         </locale>
         <locale name="message.ajax.getKeys.error" html="true">
-            <de><![CDATA[Beim Abruf der Authentifizierungs-Schlüssels ist ein Fehler aufgetreten:<br/><br/>[error]]]></de>
+            <de>
+                <![CDATA[Beim Abruf der Authentifizierungs-Schlüssels ist ein Fehler aufgetreten:<br/><br/>[error]]]></de>
         </locale>
         <locale name="message.ajax.deleteKeys.error" html="true">
-            <de><![CDATA[Beim Löschen der Authentifizierungs-Schlüssel ist ein Fehler aufgetreten:<br/><br/>[error]]]></de>
+            <de>
+                <![CDATA[Beim Löschen der Authentifizierungs-Schlüssel ist ein Fehler aufgetreten:<br/><br/>[error]]]></de>
         </locale>
         <locale name="message.ajax.deleteKeys.success">
             <de><![CDATA[Die gewählten Authentifizierungs-Schlüssel wurden erfolgreich gelöscht.]]></de>
@@ -48,7 +54,8 @@
             <de><![CDATA[Beim Neu-Generieren der Einmal-Login-Codes ist ein Fehler aufgetreten:<br/><br/>[error]]]></de>
         </locale>
         <locale name="message.ajax.regenerateRecoveryKeys.success">
-            <de><![CDATA[Die Einmal-Login-Codes wurden neu generiert. Die bisherigen Codes sind ab jetzt nicht mehr gültig.]]></de>
+            <de>
+                <![CDATA[Die Einmal-Login-Codes wurden neu generiert. Die bisherigen Codes sind ab jetzt nicht mehr gültig.]]></de>
         </locale>
 
         <!-- Class: Auth -->
@@ -71,6 +78,16 @@
         </locale>
         <locale name="login.btn.auth">
             <de><![CDATA[Authentifizieren]]></de>
+        </locale>
+
+        <!-- CLI -->
+        <locale name="message.insert.code">
+            <de><![CDATA[Google Authentication Code ein]]></de>
+            <en><![CDATA[Google Authentication Code]]></en>
+        </locale>
+        <locale name="message.insert.code.title">
+            <de><![CDATA[Google Authentication Code:]]></de>
+            <en><![CDATA[Google Authentication Code:]]></en>
         </locale>
 
     </groups>
@@ -118,7 +135,8 @@
             <de><![CDATA[Authentifizierungs-Schlüssel löschen]]></de>
         </locale>
         <locale name="controls.settings.deleteKeys.info" html="true">
-            <de><![CDATA[Sind Sie sicher, dass Sie die folgenden Authentifizierungs-Schlüssel unwiderruflich löschen wollen? Alle mit diesen Schlüsseln verknüpften Geräte können sich danach nicht mehr mit generierten Codes zu diesen Schlüsseln authentifizieren.<br/><br/>[titles]]]></de>
+            <de>
+                <![CDATA[Sind Sie sicher, dass Sie die folgenden Authentifizierungs-Schlüssel unwiderruflich löschen wollen? Alle mit diesen Schlüsseln verknüpften Geräte können sich danach nicht mehr mit generierten Codes zu diesen Schlüsseln authentifizieren.<br/><br/>[titles]]]></de>
         </locale>
         <locale name="controls.settings.showkey.regenerate.recoverykeys.btn">
             <de><![CDATA[Neu generieren]]></de>
@@ -127,7 +145,8 @@
             <de><![CDATA[Einmal-Login-Codes neu generieren]]></de>
         </locale>
         <locale name="controls.settings.showkey.regenerate.warning">
-            <de><![CDATA[Sind Sie sicher, dass Sie die Einmal-Login-Codes neu generieren wollen? Alle alten Codes sind danach nicht mehr gültig und es können nur die neuen Codes verwendet werden.]]></de>
+            <de>
+                <![CDATA[Sind Sie sicher, dass Sie die Einmal-Login-Codes neu generieren wollen? Alle alten Codes sind danach nicht mehr gültig und es können nur die neuen Codes verwendet werden.]]></de>
         </locale>
 
     </groups>
