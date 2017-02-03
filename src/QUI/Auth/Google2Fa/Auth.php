@@ -4,7 +4,7 @@ namespace QUI\Auth\Google2Fa;
 
 use QUI;
 use PragmaRX\Google2FA\Google2FA;
-use QUI\Users\AuthInterface;
+use QUI\Users\AbstractAuthenticator;
 use QUI\Users\User;
 use QUI\Auth\Google2Fa\Exception as Google2FaException;
 use QUI\Security;
@@ -16,7 +16,7 @@ use QUI\Security;
  *
  * @package QUI\Authe\Google2Fa
  */
-class Auth implements AuthInterface
+class Auth extends AbstractAuthenticator
 {
     /**
      * Google2FA class
