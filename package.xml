@@ -8,9 +8,15 @@
             <locale group="quiqqer/authgoogle2fa" var="package.description"/>
         </description>
 
-       <provider>
-           <auth src="\QUI\Auth\Google2Fa\Auth" />
-       </provider>
+        <support>
+            <email>support@pcsg.de</email>
+            <issues>https://dev.quiqqer.com/quiqqer/authgoogle2fa/issuesgoo </issues>
+            <source>https://dev.quiqqer.com/quiqqer/authgoogle2fa</source>
+        </support>
+
+        <provider>
+            <auth src="\QUI\Auth\Google2Fa\Auth"/>
+        </provider>
 
     </package>
 </quiqqer>
