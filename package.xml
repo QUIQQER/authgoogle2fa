@@ -10,9 +10,16 @@
 
         <support>
             <email>support@pcsg.de</email>
-            <issues>https://dev.quiqqer.com/quiqqer/authgoogle2fa/issuesgoo </issues>
+            <forum>https://community.quiqqer.com</forum>
             <source>https://dev.quiqqer.com/quiqqer/authgoogle2fa</source>
+            <issues>https://dev.quiqqer.com/quiqqer/authgoogle2fa/issues</issues>
+            <wiki>https://dev.quiqqer.com/quiqqer/authgoogle2fa/wikis/home</wiki>
         </support>
+
+        <copyright>
+            <name><![CDATA[PCSG - Computer & Internet Service OHG]]></name>
+            <license></license>
+        </copyright>
 
         <provider>
             <auth src="\QUI\Auth\Google2Fa\Auth"/>
