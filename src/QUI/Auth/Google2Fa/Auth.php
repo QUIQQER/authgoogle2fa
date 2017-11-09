@@ -189,14 +189,6 @@ class Auth extends AbstractAuthenticator
     /**
      * @return \QUI\Control
      */
-    public static function getRegisterControl()
-    {
-        return null;
-    }
-
-    /**
-     * @return \QUI\Control
-     */
     public static function getSettingsControl()
     {
         return new QUI\Auth\Google2Fa\Controls\Settings();
