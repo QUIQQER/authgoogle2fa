@@ -41,7 +41,14 @@ class Auth extends AbstractAuthenticator
      */
     public function __construct($user = '')
     {
-        $this->User      = QUI::getUsers()->getUserByName($user);
+        if (!empty($user)) {
+            try {
+                $this->User = QUI::getUsers()->getUserByName($user);
+            } catch (\Exception $Exception) {
+                $this->User = QUI::getUsers()->getNobody();
+            }
+        }
+
         $this->Google2FA = new Google2FA();
     }
 
