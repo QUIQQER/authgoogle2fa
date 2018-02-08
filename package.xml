@@ -10,6 +10,11 @@
 
         <image src="URL_OPT_DIR/quiqqer/authgoogle2fa/bin/images/Logo.jpg"/>
 
+        <preview>
+            <image src="URL_OPT_DIR/quiqqer/authgoogle2fa/bin/images/preview/Backend_Authenticator.png"/>
+            <image src="URL_OPT_DIR/quiqqer/authgoogle2fa/bin/images/preview/Backend_KeyList.png"/>
+        </preview>
+
         <support>
             <email><![CDATA[support@pcsg.de]]></email>
             <forum><![CDATA[https://community.quiqqer.com]]></forum>
