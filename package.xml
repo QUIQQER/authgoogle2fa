@@ -8,6 +8,8 @@
             <locale group="quiqqer/authgoogle2fa" var="package.description"/>
         </description>
 
+        <image src="URL_OPT_DIR/quiqqer/authgoogle2fa/bin/images/Logo.jpg"/>
+
         <support>
             <email><![CDATA[support@pcsg.de]]></email>
             <forum><![CDATA[https://community.quiqqer.com]]></forum>

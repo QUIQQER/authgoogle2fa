@@ -1,3 +1,5 @@
+![QUIQQER Google Authenticator](bin/images/Readme.jpg)
+
 QUIQQER Google Authenticator
 ========
 
