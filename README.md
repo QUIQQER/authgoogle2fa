@@ -1,40 +1,39 @@
-authgoogle2fa
+QUIQQER Google Authenticator
 ========
 
-QUIQQER Authentication with Google Authenticator
+This module an authentication option for QUIQQER. User accounts can be connected with Google Authenticator
+and sign in with a secure code that is periodically regenerated.
 
-Paketname:
+Google Authenticator is a mobile app.
+
+Package Name:
 
     quiqqer/authgoogle2fa
 
 
-Features (Funktionen)
+Features
 --------
-QUIQQER Authentication with Google Authenticator
+* Authentication via Google Authenticator
 
 Installation
 ------------
+The Package Name is: quiqqer/authgoogle2fa
 
-Der Paketname ist: quiqqer/authgoogle2fa
 
-
-Mitwirken
+Contribute
 ----------
-
-- Issue Tracker: 
-- Source Code: 
+- Project: https://dev.quiqqer.com/quiqqer/authgoogle2fa
+- Issue Tracker: https://dev.quiqqer.com/quiqqer/authgoogle2fa/issues
+- Source Code: https://dev.quiqqer.com/quiqqer/authgoogle2fa/tree/master
 
 
 Support
 -------
+If you have found errors, wishes or suggestions for improvement,
+you can contact us by email at support@pcsg.de.
 
-Falls Sie einen Fehler gefunden haben oder Verbesserungen wünschen,
-senden Sie bitte eine E-Mail an support@pcsg.de.
+We will transfer your message to the responsible developers.
 
-
-Lizenz
+License
 -------
-
-
-Entwickler
---------
+GPL-3.0+
