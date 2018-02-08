@@ -3,7 +3,7 @@
 QUIQQER Google Authenticator
 ========
 
-This module an authentication option for QUIQQER. User accounts can be connected with Google Authenticator
+This module an authentication option for QUIQQER. Backend user accounts can be connected with Google Authenticator
 and sign in with a secure code that is periodically regenerated.
 
 Google Authenticator is a mobile app.
