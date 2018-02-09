@@ -1,10 +1,8 @@
 <?php
 
-use QUI;
 use PragmaRX\Google2FA\Google2FA;
 use QUI\Utils\Security\Orthos;
 use QUI\Security;
-use QUI\Auth\Google2Fa\Auth;
 
 /**
  * Create new google authenticator key for a user
