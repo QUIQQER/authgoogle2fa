@@ -8,9 +8,29 @@
             <locale group="quiqqer/authgoogle2fa" var="package.description"/>
         </description>
 
-       <provider>
-           <auth src="\QUI\Auth\Google2Fa\Auth" />
-       </provider>
+        <image src="URL_OPT_DIR/quiqqer/authgoogle2fa/bin/images/Logo.jpg"/>
+
+        <preview>
+            <image src="URL_OPT_DIR/quiqqer/authgoogle2fa/bin/images/preview/Backend_Authenticator.png"/>
+            <image src="URL_OPT_DIR/quiqqer/authgoogle2fa/bin/images/preview/Backend_KeyList.png"/>
+        </preview>
+
+        <support>
+            <email><![CDATA[support@pcsg.de]]></email>
+            <forum><![CDATA[https://community.quiqqer.com]]></forum>
+            <source><![CDATA[https://dev.quiqqer.com/quiqqer/authgoogle2fa]]></source>
+            <issues><![CDATA[https://dev.quiqqer.com/quiqqer/authgoogle2fa/issues]]></issues>
+            <wiki><![CDATA[https://dev.quiqqer.com/quiqqer/authgoogle2fa/wikis/home]]></wiki>
+        </support>
+
+        <copyright>
+            <name><![CDATA[PCSG - Computer & Internet Service OHG]]></name>
+            <license><![CDATA[GPL-3.0+]]></license>
+        </copyright>
+
+        <provider>
+            <auth src="\QUI\Auth\Google2Fa\Auth"/>
+        </provider>
 
     </package>
 </quiqqer>

@@ -41,7 +41,14 @@ class Auth extends AbstractAuthenticator
      */
     public function __construct($user = '')
     {
-        $this->User      = QUI::getUsers()->getUserByName($user);
+        if (!empty($user)) {
+            try {
+                $this->User = QUI::getUsers()->getUserByName($user);
+            } catch (\Exception $Exception) {
+                $this->User = QUI::getUsers()->getNobody();
+            }
+        }
+
         $this->Google2FA = new Google2FA();
     }
 
@@ -184,14 +191,6 @@ class Auth extends AbstractAuthenticator
     public static function getLoginControl()
     {
         return new QUI\Auth\Google2Fa\Controls\Login();
-    }
-
-    /**
-     * @return \QUI\Control
-     */
-    public static function getRegisterControl()
-    {
-        return null;
     }
 
     /**
