@@ -2,12 +2,12 @@
 
 namespace QUI\Auth\Google2Fa;
 
-use QUI;
 use PragmaRX\Google2FA\Google2FA;
-use QUI\Users\AbstractAuthenticator;
-use QUI\Users\User;
+use QUI;
 use QUI\Auth\Google2Fa\Exception as Google2FaException;
 use QUI\Security;
+use QUI\Users\AbstractAuthenticator;
+use QUI\Users\User;
 
 /**
  * Class Auth
@@ -87,16 +87,17 @@ class Auth extends AbstractAuthenticator
      */
     public function auth($authData)
     {
-        if (!is_array($authData)
+        if (
+            !is_array($authData)
             || !isset($authData['code'])
         ) {
-            throw new Google2FaException(array(
+            throw new Google2FaException([
                 'quiqqer/authgoogle2fa',
                 'exception.auth.wrong.auth.code'
-            ));
+            ]);
         }
 
-        $authCode    = $authData['code'];
+        $authCode = $authData['code'];
         $authSecrets = json_decode($this->User->getAttribute('quiqqer.auth.google2fa.secrets'), true);
 
         // if no secret keys have been generated -> automatically authenticate the user
@@ -124,11 +125,11 @@ class Auth extends AbstractAuthenticator
                 }
 
                 // set used status of recovery key to true
-                $recoveryKeyData['used']     = true;
+                $recoveryKeyData['used'] = true;
                 $recoveryKeyData['usedDate'] = date('Y-m-d H:i:s');
 
                 $secretData['recoveryKeys'][$k2] = $recoveryKeyData;
-                $authSecrets[$k]                 = $secretData;
+                $authSecrets[$k] = $secretData;
 
                 $this->User->setAttribute('quiqqer.auth.google2fa.secrets', json_encode($authSecrets));
                 $this->User->save(QUI::getUsers()->getSystemUser());
@@ -137,10 +138,10 @@ class Auth extends AbstractAuthenticator
             }
         }
 
-        throw new Google2FaException(array(
+        throw new Google2FaException([
             'quiqqer/authgoogle2fa',
             'exception.auth.wrong.auth.code'
-        ));
+        ]);
     }
 
     /**
@@ -171,15 +172,15 @@ class Auth extends AbstractAuthenticator
      */
     public static function generateRecoveryKeys($count = 10)
     {
-        $recoveryKeys = array();
-        $Google2FA    = new Google2FA();
+        $recoveryKeys = [];
+        $Google2FA = new Google2FA();
 
         for ($i = 0; $i < $count; $i++) {
-            $recoveryKeys[] = array(
-                'key'      => Security::encrypt(md5($Google2FA->generateSecretKey(16))),
-                'used'     => false,
+            $recoveryKeys[] = [
+                'key' => Security::encrypt(md5($Google2FA->generateSecretKey(16))),
+                'used' => false,
                 'usedDate' => false
-            );
+            ];
         }
 
         return $recoveryKeys;
@@ -236,8 +237,8 @@ class Auth extends AbstractAuthenticator
 
         $code = $Console->readInput();
 
-        $this->auth(array(
+        $this->auth([
             'code' => $code
-        ));
+        ]);
     }
 }

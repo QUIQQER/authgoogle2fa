@@ -3,9 +3,9 @@
 /**
  * This file contains
  */
+
 namespace QUI\Auth\Google2Fa\Controls;
 
-use QUI;
 use QUI\Control;
 
 /**

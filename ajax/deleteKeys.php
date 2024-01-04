@@ -1,19 +1,20 @@
 <?php
 
-use QUI\Utils\Security\Orthos;
-
 /**
  * Create new google authenticator key for a user
  *
  * @param array $titles - titles of the keys that should be deleted
  * @return bool - success
  */
+
+use QUI\Utils\Security\Orthos;
+
 QUI::$Ajax->registerFunction(
     'package_quiqqer_authgoogle2fa_ajax_deleteKeys',
     function ($userId, $titles) {
-        $Users       = QUI::getUsers();
-        $AuthUser    = $Users->get((int)$userId);
-        $titles      = Orthos::clearArray(json_decode($titles, true));
+        $Users = QUI::getUsers();
+        $AuthUser = $Users->get((int)$userId);
+        $titles = Orthos::clearArray(json_decode($titles, true));
         $SessionUser = QUI::getUserBySession();
 
         // @todo Check user edit permission of session user
@@ -48,9 +49,9 @@ QUI::$Ajax->registerFunction(
                 QUI::getLocale()->get(
                     'quiqqer/authgoogle2fa',
                     'message.ajax.deleteKeys.error',
-                    array(
+                    [
                         'error' => $Exception->getMessage()
-                    )
+                    ]
                 )
             );
 
@@ -75,6 +76,6 @@ QUI::$Ajax->registerFunction(
 
         return true;
     },
-    array('userId', 'titles'),
+    ['userId', 'titles'],
     'Permission::checkAdminUser'
 );
