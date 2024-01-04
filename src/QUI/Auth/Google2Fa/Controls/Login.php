@@ -3,6 +3,7 @@
 /**
  * This file contains QUI\Auth\Google2Fa\Controls\Login
  */
+
 namespace QUI\Auth\Google2Fa\Controls;
 
 use QUI;
@@ -20,7 +21,7 @@ class Login extends Control
      *
      * @param array $attributes
      */
-    public function __construct(array $attributes = array())
+    public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
 
@@ -33,11 +34,11 @@ class Login extends Control
     public function getBody()
     {
         $username = QUI::getSession()->get('username');
-        $Engine   = QUI::getTemplateManager()->getEngine();
+        $Engine = QUI::getTemplateManager()->getEngine();
 
-        $Engine->assign(array(
+        $Engine->assign([
             'username' => $username
-        ));
+        ]);
 
         return $Engine->fetch(dirname(__FILE__) . '/Login.html');
     }

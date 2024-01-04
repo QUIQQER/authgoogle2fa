@@ -1,24 +1,22 @@
 <?php
 
-use QUI;
-use PragmaRX\Google2FA\Google2FA;
-use QUI\Utils\Security\Orthos;
-use QUI\Security;
-use QUI\Auth\Google2Fa\Auth;
-
 /**
  * Re-generate a set of recovery keys for a user authentication key
  *
  * @param string $title - key title
  * @return bool - success
  */
+
+use QUI\Auth\Google2Fa\Auth;
+use QUI\Utils\Security\Orthos;
+
 QUI::$Ajax->registerFunction(
     'package_quiqqer_authgoogle2fa_ajax_regenerateRecoveryKeys',
     function ($userId, $title) {
-        $Users       = QUI::getUsers();
+        $Users = QUI::getUsers();
         $SessionUser = QUI::getUserBySession();
-        $AuthUser    = $Users->get((int)$userId);
-        $title       = Orthos::clear($title);
+        $AuthUser = $Users->get((int)$userId);
+        $title = Orthos::clear($title);
 
         if ($Users->isNobodyUser($SessionUser)) {
             throw new QUI\Permissions\Exception(
@@ -35,19 +33,19 @@ QUI::$Ajax->registerFunction(
             $secrets = json_decode($AuthUser->getAttribute('quiqqer.auth.google2fa.secrets'), true);
 
             if (empty($secrets)) {
-                $secrets = array();
+                $secrets = [];
             }
 
             if (!isset($secrets[$title])) {
-                throw new QUI\Auth\Google2Fa\Exception(array(
+                throw new QUI\Auth\Google2Fa\Exception([
                     'quiqqer/authgoogle2fa',
                     'exception.ajax.getKey.title.not.found',
-                    array(
-                        'title'  => $title,
-                        'user'   => $AuthUser->getUsername(),
+                    [
+                        'title' => $title,
+                        'user' => $AuthUser->getUsername(),
                         'userId' => $AuthUser->getId()
-                    )
-                ));
+                    ]
+                ]);
             }
 
             $secrets[$title]['recoveryKeys'] = Auth::generateRecoveryKeys();
@@ -63,9 +61,9 @@ QUI::$Ajax->registerFunction(
                 QUI::getLocale()->get(
                     'quiqqer/authgoogle2fa',
                     'message.ajax.regenerateRecoveryKeys.error',
-                    array(
+                    [
                         'error' => $Exception->getMessage()
-                    )
+                    ]
                 )
             );
 
@@ -85,14 +83,14 @@ QUI::$Ajax->registerFunction(
             QUI::getLocale()->get(
                 'quiqqer/authgoogle2fa',
                 'message.ajax.regenerateRecoveryKeys.success',
-                array(
+                [
                     'title' => $title
-                )
+                ]
             )
         );
 
         return true;
     },
-    array('userId', 'title'),
+    ['userId', 'title'],
     'Permission::checkAdminUser'
 );
