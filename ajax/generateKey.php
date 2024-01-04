@@ -1,23 +1,24 @@
 <?php
 
-use PragmaRX\Google2FA\Google2FA;
-use QUI\Utils\Security\Orthos;
-use QUI\Security;
-use QUI\Auth\Google2Fa\Auth;
-
 /**
  * Create new google authenticator key for a user
  *
  * @param string $title - key title
  * @return bool - success
  */
+
+use PragmaRX\Google2FA\Google2FA;
+use QUI\Auth\Google2Fa\Auth;
+use QUI\Security;
+use QUI\Utils\Security\Orthos;
+
 QUI::$Ajax->registerFunction(
     'package_quiqqer_authgoogle2fa_ajax_generateKey',
     function ($userId, $title) {
-        $Users       = QUI::getUsers();
+        $Users = QUI::getUsers();
         $SessionUser = QUI::getUserBySession();
-        $AuthUser    = $Users->get((int)$userId);
-        $title       = Orthos::clear($title);
+        $AuthUser = $Users->get((int)$userId);
+        $title = Orthos::clear($title);
 
         if ($Users->isNobodyUser($SessionUser)) {
             throw new QUI\Permissions\Exception(
@@ -32,28 +33,28 @@ QUI::$Ajax->registerFunction(
 
         try {
             $Google2FA = new Google2FA();
-            $secrets   = json_decode($AuthUser->getAttribute('quiqqer.auth.google2fa.secrets'), true);
+            $secrets = json_decode($AuthUser->getAttribute('quiqqer.auth.google2fa.secrets'), true);
 
             if (empty($secrets)) {
-                $secrets = array();
+                $secrets = [];
             }
 
             if (isset($secrets[$title])) {
-                throw new QUI\Auth\Google2Fa\Exception(array(
+                throw new QUI\Auth\Google2Fa\Exception([
                     'quiqqer/authgoogle2fa',
                     'exception.ajax.generateKey.title.already.exists',
-                    array(
+                    [
                         'title' => $title
-                    )
-                ));
+                    ]
+                ]);
             }
 
-            $secrets[$title] = array(
-                'key'          => Security::encrypt($Google2FA->generateSecretKey(32)),
+            $secrets[$title] = [
+                'key' => Security::encrypt($Google2FA->generateSecretKey(32)),
                 'recoveryKeys' => Auth::generateRecoveryKeys(),
                 'createUserId' => $SessionUser->getId(),
-                'createDate'   => date('Y-m-d H:i:s')
-            );
+                'createDate' => date('Y-m-d H:i:s')
+            ];
 
             $AuthUser->setAttribute(
                 'quiqqer.auth.google2fa.secrets',
@@ -66,9 +67,9 @@ QUI::$Ajax->registerFunction(
                 QUI::getLocale()->get(
                     'quiqqer/authgoogle2fa',
                     'message.ajax.generateKey.error',
-                    array(
+                    [
                         'error' => $Exception->getMessage()
-                    )
+                    ]
                 )
             );
 
@@ -88,14 +89,14 @@ QUI::$Ajax->registerFunction(
             QUI::getLocale()->get(
                 'quiqqer/authgoogle2fa',
                 'message.ajax.generateKey.success',
-                array(
+                [
                     'title' => $title
-                )
+                ]
             )
         );
 
         return true;
     },
-    array('userId', 'title'),
+    ['userId', 'title'],
     'Permission::checkAdminUser'
 );
