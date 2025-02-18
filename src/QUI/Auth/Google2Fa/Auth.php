@@ -5,9 +5,10 @@ namespace QUI\Auth\Google2Fa;
 use PragmaRX\Google2FA\Google2FA;
 use QUI;
 use QUI\Auth\Google2Fa\Exception as Google2FaException;
-use QUI\Security;
+use QUI\Control;
+use QUI\Locale;
+use QUI\Security\Encryption;
 use QUI\Users\AbstractAuthenticator;
-use QUI\Users\User;
 
 /**
  * Class Auth
@@ -23,14 +24,14 @@ class Auth extends AbstractAuthenticator
      *
      * @var Google2FA
      */
-    protected $Google2FA = null;
+    protected Google2FA | null $Google2FA = null;
 
     /**
      * User that is to be authenticated
      *
-     * @var User
+     * @var QUI\Interfaces\Users\User | null
      */
-    protected $User = null;
+    protected QUI\Interfaces\Users\User | null $User = null;
 
     /**
      * Auth Constructor.
@@ -44,7 +45,7 @@ class Auth extends AbstractAuthenticator
         if (!empty($user)) {
             try {
                 $this->User = QUI::getUsers()->getUserByName($user);
-            } catch (\Exception $Exception) {
+            } catch (\Exception) {
                 $this->User = QUI::getUsers()->getNobody();
             }
         }
@@ -53,10 +54,10 @@ class Auth extends AbstractAuthenticator
     }
 
     /**
-     * @param null|\QUI\Locale $Locale
+     * @param null|Locale $Locale
      * @return string
      */
-    public function getTitle($Locale = null)
+    public function getTitle(null | Locale $Locale = null): string
     {
         if (is_null($Locale)) {
             $Locale = QUI::getLocale();
@@ -66,10 +67,10 @@ class Auth extends AbstractAuthenticator
     }
 
     /**
-     * @param null|\QUI\Locale $Locale
+     * @param null|Locale $Locale
      * @return string
      */
-    public function getDescription($Locale = null)
+    public function getDescription(null | Locale $Locale = null): string
     {
         if (is_null($Locale)) {
             $Locale = QUI::getLocale();
@@ -81,15 +82,15 @@ class Auth extends AbstractAuthenticator
     /**
      * Authenticate the user
      *
-     * @param string|array|integer $authData
+     * @param string|array|integer $authParams
      *
      * @throws QUI\Auth\Google2Fa\Exception
      */
-    public function auth($authData)
+    public function auth(string | array | int $authParams): void
     {
         if (
-            !is_array($authData)
-            || !isset($authData['code'])
+            !is_array($authParams)
+            || !isset($authParams['code'])
         ) {
             throw new Google2FaException([
                 'quiqqer/authgoogle2fa',
@@ -97,7 +98,7 @@ class Auth extends AbstractAuthenticator
             ]);
         }
 
-        $authCode = $authData['code'];
+        $authCode = $authParams['code'];
         $authSecrets = json_decode($this->User->getAttribute('quiqqer.auth.google2fa.secrets'), true);
 
         // if no secret keys have been generated -> automatically authenticate the user
@@ -106,7 +107,7 @@ class Auth extends AbstractAuthenticator
         }
 
         foreach ($authSecrets as $k => $secretData) {
-            $key = trim(Security::decrypt($secretData['key']));
+            $key = trim(Encryption::decrypt($secretData['key']));
 
             if ($this->Google2FA->verifyKey($key, $authCode)) {
                 return;
@@ -118,7 +119,7 @@ class Auth extends AbstractAuthenticator
                     continue;
                 }
 
-                $recoveryKey = trim(Security::decrypt($recoveryKeyData['key']));
+                $recoveryKey = trim(Encryption::decrypt($recoveryKeyData['key']));
 
                 if ($recoveryKey != $authCode) {
                     continue;
@@ -147,9 +148,9 @@ class Auth extends AbstractAuthenticator
     /**
      * Return the user object
      *
-     * @return \QUI\Interfaces\Users\User
+     * @return QUI\Interfaces\Users\User
      */
-    public function getUser()
+    public function getUser(): QUI\Interfaces\Users\User
     {
         return $this->User;
     }
@@ -157,9 +158,9 @@ class Auth extends AbstractAuthenticator
     /**
      * Return the quiqqer user id
      *
-     * @return integer|boolean
+     * @return integer
      */
-    public function getUserId()
+    public function getUserId(): int
     {
         return $this->User->getId();
     }
@@ -170,14 +171,14 @@ class Auth extends AbstractAuthenticator
      * @param int $count (optional) - number of key [default: 10]
      * @return array
      */
-    public static function generateRecoveryKeys($count = 10)
+    public static function generateRecoveryKeys(int $count = 10): array
     {
         $recoveryKeys = [];
         $Google2FA = new Google2FA();
 
         for ($i = 0; $i < $count; $i++) {
             $recoveryKeys[] = [
-                'key' => Security::encrypt(md5($Google2FA->generateSecretKey(16))),
+                'key' => Encryption::encrypt(md5($Google2FA->generateSecretKey(16))),
                 'used' => false,
                 'usedDate' => false
             ];
@@ -187,25 +188,25 @@ class Auth extends AbstractAuthenticator
     }
 
     /**
-     * @return \QUI\Control
+     * @return Control|null
      */
-    public static function getLoginControl()
+    public static function getLoginControl(): ?Control
     {
         return new QUI\Auth\Google2Fa\Controls\Login();
     }
 
     /**
-     * @return \QUI\Control
+     * @return Control|null
      */
-    public static function getSettingsControl()
+    public static function getSettingsControl(): ?Control
     {
         return new QUI\Auth\Google2Fa\Controls\Settings();
     }
 
     /**
-     * @return \QUI\Control
+     * @return Control|null
      */
-    public static function getPasswordResetControl()
+    public static function getPasswordResetControl(): ?Control
     {
         return null;
     }
@@ -213,15 +214,16 @@ class Auth extends AbstractAuthenticator
     /**
      * @return bool
      */
-    public static function isCLICompatible()
+    public static function isCLICompatible(): bool
     {
         return true;
     }
 
     /**
      * @param QUI\System\Console $Console
+     * @throws Exception
      */
-    public function cliAuthentication(QUI\System\Console $Console)
+    public function cliAuthentication(QUI\System\Console $Console): void
     {
         $Console->clearMsg();
 

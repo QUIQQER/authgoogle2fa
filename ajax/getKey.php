@@ -8,7 +8,7 @@
  */
 
 use PragmaRX\Google2FA\Google2FA;
-use QUI\Security;
+use QUI\Security\Encryption;
 use QUI\Utils\Security\Orthos;
 
 QUI::$Ajax->registerFunction(
@@ -23,6 +23,15 @@ QUI::$Ajax->registerFunction(
             throw new QUI\Permissions\Exception(
                 QUI::getLocale()->get(
                     'quiqqer/system',
+                    'exception.lib.user.no.edit.rights'
+                )
+            );
+        }
+
+        if (!method_exists($SessionUser, 'checkEditPermission')) {
+            throw new QUI\Permissions\Exception(
+                QUI::getLocale()->get(
+                    'quiqqer/core',
                     'exception.lib.user.no.edit.rights'
                 )
             );
@@ -46,7 +55,7 @@ QUI::$Ajax->registerFunction(
                 ]);
             }
 
-            $keyData['key'] = Security::decrypt($secrets[$title]['key']);
+            $keyData['key'] = Encryption::decrypt($secrets[$title]['key']);
             $keyData['qrCode'] = $Google2FA->getQRCodeInline(
                 $_SERVER['SERVER_NAME'],
                 $AuthUser->getUsername(),
@@ -60,7 +69,7 @@ QUI::$Ajax->registerFunction(
             $keyData['recoveryKeys'] = [];
 
             foreach ($secrets[$title]['recoveryKeys'] as $k => $recoveryKeyData) {
-                $recoveryKeyData['key'] = trim(Security::decrypt($recoveryKeyData['key']));
+                $recoveryKeyData['key'] = trim(Encryption::decrypt($recoveryKeyData['key']));
                 $keyData['recoveryKeys'][] = $recoveryKeyData;
             }
         } catch (QUI\Auth\Google2Fa\Exception $Exception) {
