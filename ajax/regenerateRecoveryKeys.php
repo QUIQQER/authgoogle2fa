@@ -27,6 +27,15 @@ QUI::$Ajax->registerFunction(
             );
         }
 
+        if (!method_exists($SessionUser, 'checkEditPermission')) {
+            throw new QUI\Permissions\Exception(
+                QUI::getLocale()->get(
+                    'quiqqer/core',
+                    'exception.lib.user.no.edit.rights'
+                )
+            );
+        }
+
         $SessionUser->checkEditPermission();
 
         try {

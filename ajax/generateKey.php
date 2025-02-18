@@ -9,7 +9,7 @@
 
 use PragmaRX\Google2FA\Google2FA;
 use QUI\Auth\Google2Fa\Auth;
-use QUI\Security;
+use QUI\Security\Encryption;
 use QUI\Utils\Security\Orthos;
 
 QUI::$Ajax->registerFunction(
@@ -24,6 +24,15 @@ QUI::$Ajax->registerFunction(
             throw new QUI\Permissions\Exception(
                 QUI::getLocale()->get(
                     'quiqqer/system',
+                    'exception.lib.user.no.edit.rights'
+                )
+            );
+        }
+
+        if (!method_exists($SessionUser, 'checkEditPermission')) {
+            throw new QUI\Permissions\Exception(
+                QUI::getLocale()->get(
+                    'quiqqer/core',
                     'exception.lib.user.no.edit.rights'
                 )
             );
@@ -50,7 +59,7 @@ QUI::$Ajax->registerFunction(
             }
 
             $secrets[$title] = [
-                'key' => Security::encrypt($Google2FA->generateSecretKey(32)),
+                'key' => Encryption::encrypt($Google2FA->generateSecretKey(32)),
                 'recoveryKeys' => Auth::generateRecoveryKeys(),
                 'createUserId' => $SessionUser->getId(),
                 'createDate' => date('Y-m-d H:i:s')
@@ -74,7 +83,7 @@ QUI::$Ajax->registerFunction(
             );
 
             return false;
-        } catch (\Exception $Exception) {
+        } catch (\Exception) {
             QUI::getMessagesHandler()->addError(
                 QUI::getLocale()->get(
                     'quiqqer/authgoogle2fa',

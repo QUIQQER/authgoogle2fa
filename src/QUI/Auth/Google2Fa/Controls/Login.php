@@ -31,7 +31,7 @@ class Login extends Control
     /**
      * @return string
      */
-    public function getBody()
+    public function getBody(): string
     {
         $username = QUI::getSession()->get('username');
         $Engine = QUI::getTemplateManager()->getEngine();
